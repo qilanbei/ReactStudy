@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件demo</title>
+    <!--React 的核心库-->
+    <script src="../build/react.js"></script>
+    <!--提供与 DOM 相关的一些api-->
+    <script src="../build/react-dom.js"></script>
+    <!--由于JSX语法支持html和js混写，browser的作用是将其转化为js-->
+    <script src="../build/browser.min.js"></script>
+    <style>
+        .font-color {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id='example'></div>
+    <!--react允许封装成一个组件，像插入html标签一样，在网页中插入这个组件，React.createClass方法就用于生成一个组件类-->
+    <!--变量 HelloComponent 就是一个组件类。模板插入 <HelloComponent /> 时，会自动生成 HelloComponent 的一个实例（下文的"组件"都指组件类的实例）。-->
+    <!--所有组件类都必须有自己的 render 方法，用于输出组件。-->
+    <!--注意的是：1. 组件的名字首字母要大写
+                 2. React对象才有creatClass()方法，ReactDOM有常用render()方法；
+                 React对象有的方法：Children()\Component()\DOM()\PropTypes()\cloneElement()\createClass()\creatElement()\createFactory()\createMixin()等
+                 3. 组件类中只能包含一个顶级标签,否则报错：Adjacent JSX elements must be wrapped in an enclosing tag
+    -->
+    <script type="text/babel">
+//        var HelloComponent = React.createClass({
+//            演示3的错误，两个顶级标签了，报错
+//            render: function(){
+//                return <h1>hello {this.props.name}</h1>
+//                    <span>Joke</span>;
+//            }
+//            render: function () {
+//                class 属性需要写成 className
+//                return <h1 className="font-color">hello {this.props.name}</h1>;
+//            }
+//        });
+//组件中使用的属性介绍：
+//       1.  组件的用法与原生的 HTML 标签完全一致，可以任意加入属性，比如 <HelloComponent name="John"> ，
+//        就是 HelloComponent 组件加入一个 name 属性，值为 John。组件的属性可以在组件类的 this.props 对象上获取，
+//        比如 name 属性就可以通过 this.props.name 读取，this.props 对象的属性与组件的属性一一对应；
+//        就是 class 属性需要写成 className ，for 属性需要写成 htmlFor ，这是因为 class 和 for 是 JavaScript 的保留字
+//        ReactDOM.render(
+//            <HelloComponent name="Joke"/>,
+//            document.getElementById('example')
+//        )
+//        2. 但是有一个例外，就是 this.props.children 属性。它表示组件的所有子节点
+//        this.props.children 的值有三种可能：如果当前组件没有子节点，它就是 undefined ;
+//        如果有一个子节点，数据类型是 object ；
+//        如果有多个子节点，数据类型就是 array 。所以，处理 this.props.children 的时候要小心。
+//        var HelloList = React.createClass({
+//            render: function () {
+//                return (
+//                        <ol>
+//                            {
+//                                React 提供一个工具方法 React.Children 来处理 this.props.children
+//                                使用React.Children.map来遍历子节点
+//                                所以不必担心this.props.children的值是什么类型
+//                                React.Children.map(this.props.children, function(child){
+//                                    return <li>{child}</li>;
+//                                })
+//                            }
+//                        </ol>
+//                )
+//            }
+//        });
+//        ReactDOM.render(
+//            <HelloList>
+//                <span>hello</span>
+//                <span>name</span>
+//            </HelloList>,
+//            document.getElementById('example')
+//        )
+//        3. propTypes属性:组件的属性可以为任意值，字符串、对象、函数等都是可以的，但是有的时候我们需要验证别人使用的组件提供的参数是否符合要求
+//        propTypes就是用来验证组件实例的属性是否符合要求的
+//        var HtmlCom = React.createClass({
+//            propTypes: {
+//                title: React.PropTypes.string.isRequired,
+//            },
+//            render: function(){
+//                return <h1>{this.props.title}</h1>
+//            }
+//        });
+//        如果是一个数组的话，会报错： react.js:19287 Warning: Failed propType: Invalid prop `title` of type `array` supplied to `HtmlCom`, expected `string`.
+//        因为propTypes定义的是传入的参数必须是个字符串的形式
+//        var nameStr = ['Joke','Rose'];
+//        var nameStr = 'Joke';
+//        ReactDOM.render(
+//            <HtmlCom title={nameStr}/>,
+//            document.getElementById('example')
+//        )
+//        4. 使用getDefaultProps可以设置参数的默认值
+        var HtmlCom = React.createClass({
+            getDefaultProps: function(){
+                return {
+                    title: 'hello Joke'
+                }
+            },
+            render: function (){
+                return <h1>{this.props.title}</h1>
+            }
+        });
+//        var nameStr = 'Joke';
+        ReactDOM.render(
+//            通过HtmlCom输出定义的组件
+            <HtmlCom />,
+            document.getElementById('example')
+        )
+    </script>
+</body>
+</html>

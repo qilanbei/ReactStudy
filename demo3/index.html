@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取真实dom节点</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+//        组件中的dom不是真实的dom，而是存在内存之中的一种数据结构，叫做虚拟dom,只有当插入到文档之后，才会变成真实dom，
+//        根据react的设计，所有dom的变动，都是在虚拟dom上发生的，然后再将实际发生变动的部分，反映到真实的dom上，这就是react的dom-diff算法，大大提高了网页性能
+//        有的时候需要获取真实dom节点，这个时候就通过ref属性获取，虚拟的dom是this.refs[refName]拿不到的,必须等到虚拟节点插入到文档以后，才能使用这个属性
+//        通过组件指定的click事件的回调函数，确保已经渲染成真实的dom发生click事件后，才获取ref的属性
+//        React 组件支持很多事件，除了 Click 事件以外，还有 KeyDown 、Copy、Scroll 等
+        var MyComponent = React.createClass({
+            handleClick: function(){
+//                注意这里是通过this.refs获取的，是refs
+                this.refs.myTextInput.focus();
+            },
+            render: function(){
+                return (
+                    <div>
+                        <input type="text" ref="myTextInput"/>
+                        <input type="button" onClick={this.handleClick}/>
+                    </div>
+                )
+            }
+        });
+        ReactDOM.render(
+            <MyComponent/>,
+            document.getElementById('example')
+        )
+    </script>
+</body>
+</html>

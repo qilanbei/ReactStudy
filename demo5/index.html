@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>react生命周期</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <!--React生命周期分为三个状态
+        Mounting: 已经插入真是DOM
+        Updating: 正在被重新渲染
+        Unmounting: 已经移除真实的DOM
+        React为每种状态都提供两种处理函数，will函数用来状态之前调用，did函数用来在状态之后调用
+        所以三种状态，一共有五种处理函数，分别是：
+        componentWillMount()
+        componentDidMount()
+        componentWillUpdate(object nextProps, object nextState)
+        componentDidUpdate(object prevProps, object prevState)
+        componentWillUnmount()
+        除此之外，React还有两个特殊的处理函数：
+        componentWillReceiveProps(object nextProps) 已加载组件收到新的参数时
+        shouldComponentUpdate(object nextProps, object nextState) 组件判断是否重新渲染时调用
+    -->
+    <script type="text/babel">
+        var MyCom = React.createClass({
+            getInitialState: function () {
+                return {
+                    opacity: 1.0
+                }
+            },
+//          通过 componentDidMount 方法设置一个定时器，每隔100毫秒，就重新设置组件的透明度，从而引发重新渲染
+            componentDidMount: function () {
+                this.timer = setInterval(function(){
+                    var opacityProp = this.state.opacity;
+                    opacityProp -= .5;
+                    if(opacityProp < .5){
+                        opacityProp = 1.0;
+                    }
+                    this.setState({opacity: opacityProp})
+                }.bind(this),100)
+            },
+            render: function () {
+                return (
+                    <div style={{opacity: this.state.opacity}}>
+                        hello {this.props.name}
+                    </div>
+                )
+            }
+        });
+        ReactDOM.render(
+            <MyCom name='Joke'/>,
+            document.getElementById('example')
+        )
+    </script>
+</body>
+</html>

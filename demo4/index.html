@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script type='text/babel'>
+//        React将组件看成是一个状态机，一开始有一个初始状态，然后用户互动，导致状态变化，从而触发重新渲染 UI
+//        通过getInitialState定义一个初始状态
+//        var MyCom = React.createClass({
+//            getInitialState: function () {
+//                return {
+//                    liked: false
+//                }
+//            },
+//            handle: function () {
+//                this.setState 方法就修改状态值，每次修改以后，自动调用 this.render 方法，再次渲染组件
+//                this.setState({liked: !this.state.liked})
+//            },
+//            render: function () {
+//                var text = this.state.liked ? 'liked': 'haven\'t liked';
+//                return (
+//                    <p onClick={this.handle}>you {text} this Clike to toggle</p>
+//                )
+//            }
+//        });
+//        ReactDOM.render(
+//            <MyCom />,
+//            document.getElementById('example')
+//        )
+//        用户在表单填入的内容，属于用户跟组件的互动，所以不能用 this.props 读取,也应该用state读取
+            var MyCom = React.createClass({
+                getInitialState: function () {
+                    return {value: 'hello'}
+                },
+                handleChange: function(event){
+//                    文本输入框的值，不能用this.props去获取，应该是event.target[name]去获取
+                    this.setState({value: event.target.value})
+                },
+                render: function(){
+                    var value = this.state.value;
+                    return (
+                           <div>
+                               <input type="text" value={value} onChange={this.handleChange}/>
+                               <p>{value}</p>
+                           </div>
+                    )
+                }
+            });
+            ReactDOM.render(
+                <MyCom/>,
+                document.getElementById('example')
+            )
+    </script>
+</body>
+</html>
